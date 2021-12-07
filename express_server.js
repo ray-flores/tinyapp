@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = 8080; 
-function generateRandomString() {
+
+
+const generateRandomString = () => {
   let string = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 6);
-  console.log(string);
   return string;
 }
 
@@ -17,29 +18,42 @@ const urlDatabase = {
   '9sm5xK': 'http://www.google.com'
 };
 
+app.get('/urls', (req, res) => {
+  const templateVars = {urls: urlDatabase};
+  res.render('urls_index', templateVars);
+});
+
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  let shortURL = generateRandomString();
+  urlDatabase[shortURL] = req.body.longURL;  // Log the POST request body to the console
+  //const pair = { [shortURL]: urlDatabase[shortURL] };
+  //console.log(pair);
+  //console.log(urlDatabase);
+  res.redirect(`/urls/${shortURL}`);                 // Respond with 'Ok' (we will replace this)
 });
 
 app.get('/', (req, res) => {
   res.send('Hello!');
 });
 
-app.get('/urls', (req, res) => {
-  const templateVars = {urls: urlDatabase};
-  res.render('urls_index', templateVars);
-});
-
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-//NOT WORKING: shortURL undefined... 
+
 app.get('/urls/:shortURL', (req, res) => {
   //res.send(req.params) DO NOT INCLUDE
-  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  let shortURL = req.params.shortURL;
+  let longURL = urlDatabase[req.params.shortURL];
+  const templateVars = { shortURL, longURL };
   res.render('urls_show', templateVars);
+});
+//FIX!!!
+app.get("/u/:shortURL", (req, res) => {
+  //console.log(urlDatabase);
+  const longURL = urlDatabase[req.params.shortURL];
+  console.log( req.params.shortURL, longURL );
+  res.redirect(longURL);
 });
 
 app.get('/urls.json', (req, res) => {
