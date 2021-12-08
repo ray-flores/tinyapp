@@ -25,11 +25,8 @@ app.get('/urls', (req, res) => {
 
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;  // Log the POST request body to the console
-  //const pair = { [shortURL]: urlDatabase[shortURL] };
-  //console.log(pair);
-  //console.log(urlDatabase);
-  res.redirect(`/urls/${shortURL}`);                 // Respond with 'Ok' (we will replace this)
+  urlDatabase[shortURL] = req.body.longURL;  
+  res.redirect(`/urls/${shortURL}`);                 
 });
 
 app.get('/', (req, res) => {
@@ -41,17 +38,13 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-  //res.send(req.params) DO NOT INCLUDE
-  let shortURL = req.params.shortURL;
-  let longURL = urlDatabase[req.params.shortURL];
-  const templateVars = { shortURL, longURL };
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
   res.render('urls_show', templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  //console.log(urlDatabase);
   const longURL = urlDatabase[req.params.shortURL];
-  //console.log( req.params.shortURL, longURL );
+  //console.log(longURL);
   res.redirect(longURL);
 });
 
@@ -63,7 +56,14 @@ app.get('/hello', (req, res) => {
   res.send('<html><body>Hello <b>World</b></body></html>\n');
 });
 
-//DELETE
+//EDIT
+app.post("/urls/:shortURL", (req, res) => {
+  let short = req.params.shortURL;
+  urlDatabase[short] = req.body.longURL;
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] }
+  res.redirect(`/urls`);
+});
+
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   delete urlDatabase[shortURL];
