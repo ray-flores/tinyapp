@@ -1,7 +1,9 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 8080; 
-
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
 
 const generateRandomString = () => {
   let string = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 6);
@@ -9,9 +11,8 @@ const generateRandomString = () => {
 }
 
 app.set('view engine', 'ejs');
+app.use(cookieParser());
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
 
 const urlDatabase = {
   'b2xVn2': 'http://www.lighthouselabs.ca',
