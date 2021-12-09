@@ -29,13 +29,14 @@ app.get('/hello', (req, res) => {
   res.send('<html><body>Hello <b>World</b></body></html>\n');
 });
 
-// app.get('/', (req, res) => {
-//   if (username true) {
-//     res.redirect('/urls');
-//   } else {
-//     res.redirect('/login');
-//   } 
-// });
+app.get('/', (req, res) => {
+  res.send('Hello!');
+  // if (username true) {
+  //   res.redirect('/urls');
+  // } else {
+  //   res.redirect('/login');
+  // } 
+});
 
 app.get("/urls/new", (req, res) => {
   const templateVars = { username: req.cookies.username };
@@ -62,7 +63,8 @@ app.post('/logout', function (req, res) {
 });
 
 app.get('/urls', (req, res) => {
-  const templateVars = { urls: urlDatabase, username: res.cookie.username };
+  console.log(req.cookies.username);
+  const templateVars = { urls: urlDatabase, username: req.cookies.username };
   res.render('urls_index', templateVars);
 });
 
