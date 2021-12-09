@@ -49,9 +49,6 @@ app.post('/login', function (req, res) {
   const userName = req.body.username;
   res.cookie('username', userName);
   const templateVars = { username: res.cookie.username };
-  //let username = req.body.username;
-  // console.log(req.body);
-  // console.log('Cookies:', req.cookies);
   res.redirect('/urls');
 });
 
@@ -63,7 +60,6 @@ app.post('/logout', function (req, res) {
 });
 
 app.get('/urls', (req, res) => {
-  console.log(req.cookies.username);
   const templateVars = { urls: urlDatabase, username: req.cookies.username };
   res.render('urls_index', templateVars);
 });
@@ -75,13 +71,12 @@ app.post("/urls", (req, res) => {
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: res.cookie.username };
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies.username };
   res.render('urls_show', templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
-  //console.log(longURL);
   res.redirect(longURL);
 });
 
