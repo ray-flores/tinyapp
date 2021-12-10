@@ -78,10 +78,12 @@ app.get("/register", (req, res) => {
   res.render("registration", templateVars);
 });
 
+//POST REGISTER
+
 app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  if (!email || !password) {
+  if (!email || !password || email === "" || password === "") {
     return res.status(400).send("email and password can't be blank");
   }
 
@@ -96,32 +98,55 @@ app.post("/register", (req, res) => {
     email,
     password,
   };
-
+  console.log(users);
   res.cookie("user_id", id);
   res.redirect("/urls");
 });
 
 //LOGIN!!!
 
-app.post("/login", function (req, res) {
-  //const userID = req.body.id;
+app.get('/login', (req, res) => {
   const id = req.cookies.user_id;
   const user = users[id];
-  const templateVars = { user };
+  const templateVars = { urls: urlDatabase, user };
+  res.render('login', templateVars);
+});
+
+app.post("/login", function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (!email || !password || password === '""' || email === '""') {
+    return res.status(400).send("email and password can't be blank");
+  }
+
+  const user = findUserEmail(email);
+  if (!user) {
+    return res.status(403).send("a user with that email does not exist");
+  }
+
+  if (user.password !== password) {
+    return res.status(403).send('password does not match')
+  }
+  
+  res.cookie("user_id", user.id);
   res.redirect("/urls");
+
+  // const id = req.cookies.user_id;
+  // const user = users[id];
+  // const templateVars = { user };
 });
 
 //LOGOUT!!
 
 app.post("/logout", function (req, res) {
   res.clearCookie("user_id");
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 app.get("/urls", (req, res) => {
 
   const id = req.cookies.user_id;
-
   const user = users[id];
   const templateVars = { urls: urlDatabase, user };
 
