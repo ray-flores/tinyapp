@@ -1,5 +1,5 @@
 const express = require("express");
-const morgan = require("morgan");
+const bcrypt = require('bcryptjs');
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const app = express();
@@ -32,12 +32,12 @@ const users = {
   userRandomID: {
     id: "userRandomID",
     email: "user@example.com",
-    password: "abc",
+    hashedPassword: bcrypt.hashSync("abc", 10),
   },
   userRandomID2: {
     id: "userRandomID2",
     email: "user2@example.com",
-    password: "123",
+    hashedPassword: bcrypt.hashSync("123", 10),
   },
 };
 
@@ -108,6 +108,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
   if (!email || !password || email === '""' || password === '""') {
     return res.status(400).send("email and password can't be blank");
   }
@@ -121,7 +122,7 @@ app.post("/register", (req, res) => {
   users[id] = {
     id,
     email,
-    password,
+    hashedPassword,
   };
   console.log(users);
   res.cookie("user_id", id);
@@ -149,8 +150,8 @@ app.post("/login", function (req, res) {
   if (!user) {
     return res.status(403).send("a user with that email does not exist");
   }
-
-  if (user.password !== password) {
+//(user.password !== password)
+  if (!bcrypt.compareSync(password, user.hashedPassword)) {
     return res.status(403).send('password does not match')
   }
   
@@ -194,6 +195,9 @@ app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const id = req.cookies.user_id;
   const user = users[id];
+  if(!urlDatabase[shortURL]) {
+    return res.status(404).send('this website does not exist in the database');
+  }
   if (!user) {
     return res.status(401).send('Please log in or register!');
   } 
