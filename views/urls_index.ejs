@@ -22,17 +22,17 @@
         </tr>
       </thead>
       <tbody>
-        <% for(let url in urls) { %>
+        <% for(let url in urls) { %> 
           <tr>
             <td><a><%= url %></a></td>
-            <td><a><%= urls[url] %></a></td>
+            <td><a><%= urls[url].longURL %></a></td>
             <td><a href="/urls/<%=url%>"><button type="submit" class="btn btn-outline-primary">Edit</button></a></form>
             <td><form method="POST" action="/urls/<%= url %>/delete"><button type="submit" class="btn btn-danger">Delete</button></form></td>
           </tr>
         <% } %>
       </tbody>
     </table>
-    <p><a href="#"> Shorten another URL </a></p>
+    <p><a href="urls/new"> Shorten another URL </a></p>
   </main>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
