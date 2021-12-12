@@ -13,6 +13,8 @@ app.use(cookieSession({
   keys: ["key"],
 }));
 
+// --DATA--
+
 const urlDatabase = {
   b2xVn2: {
     longURL: "http://www.lighthouselabs.ca",
@@ -36,6 +38,8 @@ const users = {
     hashedPassword: bcrypt.hashSync("123", 10),
   },
 };
+
+// --ROUTES-- 
 
 app.get("/", (req, res) => {
   const id = req.session.user_id;
