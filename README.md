@@ -8,7 +8,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 !["Create a Short Link"](https://github.com/ray-flores/tinyapp/blob/master/docs/new-shorturl-page.png?raw=true)
 
-!["screenshot description"](#)
+!["A sample URL List"](https://github.com/ray-flores/tinyapp/blob/master/docs/urls-page.png?raw=true)
 
 ## Dependencies
 
