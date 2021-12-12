@@ -37,8 +37,6 @@ const users = {
   },
 };
 
-//ROUTES//
-
 app.get("/", (req, res) => {
   const id = req.session.user_id;
   const user = users[id];
@@ -177,13 +175,14 @@ app.get("/urls/:shortURL", (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-
-  if (urlDatabase[shortURL].longURL.indexOf('http://') !== 0) {
-    const url = `http://${urlDatabase[shortURL].longURL}`;
-    res.redirect(url);
-  }
   if (!urlDatabase[shortURL].longURL) {
     return res.status(404).send('this website does not exist');
+  }
+
+  const hasHttp = urlDatabase[shortURL].longURL.indexOf('http://');
+  if (hasHttp !== 0) {
+    const url = `http://${urlDatabase[shortURL].longURL}`;
+    res.redirect(url);
   }
 
   const long = urlDatabase[shortURL].longURL;
