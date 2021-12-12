@@ -6,7 +6,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 !["TinyApp Login Page"](https://github.com/ray-flores/tinyapp/blob/master/docs/login-page.png?raw=true)
 
-!["screenshot description"](#)
+!["Create a Short Link"](https://github.com/ray-flores/tinyapp/blob/master/docs/new-shorturl-page.png?raw=true)
 
 !["screenshot description"](#)
 
