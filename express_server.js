@@ -82,7 +82,7 @@ app.post("/register", (req, res) => {
   if (!email || !password || email === '""' || password === '""') {
     return res.status(400).send("email and password can't be blank");
   }
-  const user = findUserByEmail(email);
+  const user = findUserByEmail(email, users);
   if (user) {
     return res.status(400).send("a user already exists with that email");
   }
@@ -125,7 +125,7 @@ app.post("/login", function(req, res) {
 });
 
 app.post("/logout", function(req, res) {
-  delete req.session.user_id;
+  req.session = null;
   res.redirect("/urls");
 });
 
