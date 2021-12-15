@@ -13,7 +13,7 @@ app.use(cookieSession({
   keys: ["key"],
 }));
 
-// --DATA--
+// --DATA-- //
 
 const urlDatabase = {
   b2xVn2: {
@@ -39,7 +39,7 @@ const users = {
   },
 };
 
-// --ROUTES-- 
+// --ROUTES-- //
 
 app.get("/", (req, res) => {
   const id = req.session.user_id;
@@ -67,6 +67,8 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+//--Register Routes--//
+
 app.get("/register", (req, res) => {
   const id = req.session.user_id;
   const user = users[id];
@@ -79,7 +81,7 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
   
-  if (!email || !password || email === '""' || password === '""') {
+  if (!email || !password) {
     return res.status(400).send("email and password can't be blank");
   }
   const user = findUserByEmail(email, users);
@@ -98,6 +100,8 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
+//--Login/Logout Routes--//
+
 app.get('/login', (req, res) => {
   const id = req.session.user_id;
   const user = users[id];
@@ -109,7 +113,7 @@ app.post("/login", function(req, res) {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (!email || !password || password === '""' || email === '""') {
+  if (!email || !password) {
     return res.status(400).send("email and password can't be blank");
   }
   const user = findUserByEmail(email, users);
@@ -128,6 +132,8 @@ app.post("/logout", function(req, res) {
   req.session = null;
   res.redirect("/urls");
 });
+
+//--URL Routes--//
 
 app.get("/urls", (req, res) => {
   const id = req.session.user_id;
