@@ -212,7 +212,7 @@ app.post("/urls/:shortURL", (req, res) => {
   res.redirect("/urls");
 });
 
-app.get("/urls/:shortURL/delete", (req, res) => {
+app.post("/urls/:shortURL/delete", (req, res) => {
   const id = req.session.user_id;
   const shortURL = req.params.shortURL;
   const user = users[id];
